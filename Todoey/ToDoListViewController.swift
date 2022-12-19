@@ -10,9 +10,13 @@ import UIKit
 class ToDoListViewController: UITableViewController {
 
     var itemArray = ["A", "B", "C"]
+    let defaults = UserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     //MARK - TableView DataSource Method
@@ -46,9 +50,8 @@ class ToDoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             if textField.text != "" {
                 self.itemArray.append(textField.text!)
+                self.defaults.setValue(self.itemArray, forKey: "TodoListArray")
                 self.tableView.reloadData()
-                print("Successfully added: \(textField.text!)")
-                print(self.itemArray.count)
             }
         }
         let action1 = UIAlertAction(title: "Cancel", style: .default)
